@@ -1,0 +1,19 @@
+<!-- Delete an item -->
+
+{% extends "base.html" %}
+{% block title %}Delete Item {{item.name}} - Catalog App{% endblock %}
+{% block content %}
+
+<h3> Are you sure you want to delete {{item.name}}? </h3>
+
+<form method='post'>
+    {{ form.csrf_token }}
+    <button type="submit" class="btn btn-default delete" id="submit" type="submit">
+        <span class="glyphicon glyphicon-trash"></span> Delete
+    </button>
+    <a href="{{url_for('catalog')}}" class="btn btn-default delete">
+        <span class="glyphicon glyphicon-remove"></span> Cancel
+    </a>
+</form>
+
+{% endblock %}

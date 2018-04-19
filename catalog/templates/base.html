@@ -1,0 +1,52 @@
+<!-- Base template for the web app -->
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+		<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+        <title>{% block title %}{% endblock %}</title>
+	</head>
+	<body>
+
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a href="{{url_for('catalog')}}" class="navbar-brand">Catalog App</a>
+
+                    <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+
+                <div class="navbar-collapse collapse" id="navbar-main">
+                    <ul class="nav navbar-nav navbar-right">
+                        {%if 'user_id' not in session %}
+                        <li><a href="{{url_for('login')}}">Log In</a></li>
+                        {%else%}
+                        <li>
+                            <a href="{{url_for('logout')}}">
+                                <img src="{{ session['picture'] }}" class="img-circle" height="20">
+                                Logout
+                            </a>
+                        </li>
+                        {%endif%}
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
+
+		<div class="container">
+			{% block content %}
+			{% endblock %}
+		</div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+	</body>
+</html>

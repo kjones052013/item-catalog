@@ -1,0 +1,40 @@
+<!-- Home Page -->
+
+{% extends "base.html" %}
+{% block title %}Catalog App{% endblock %}
+{% block content %}
+
+<div class="row">
+    {% include "flash.html" %}
+</div>
+
+<div class="row">
+    <div class="col-sm-4">
+        {% include "categories.html" %}
+    </div>
+
+    <div class="col-sm-8">
+        <div class="page-header">
+            <span class="h1">Latest Items</span>
+            <a href="{{url_for('catalogRecentAtom')}}" class="pull-right padding-top" title="Atom feed">
+                <span class="fa fa-rss"></span>
+            </a>
+            {% if 'user_id' in session and categories %}
+            <a href="{{url_for('newItem')}}" class="pull-right padding-top">
+                <span class="glyphicon glyphicon-plus"></span>Add Item
+            </a>
+            {% endif %}
+        </div>
+        {% if latest_items %}
+        {% for item in latest_items %}
+        <div>
+            <strong><a href="{{url_for('item', name = item.name)}}" class="font-larger">{{item.name}}</a></strong>
+            <span class="small text-muted">({{item.category.name}})</span>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+</div>
+    
+
+{% endblock %}

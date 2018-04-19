@@ -1,0 +1,120 @@
+<!-- Login page -->
+
+{% extends "base.html" %}
+{% block title %}Login - Catalog App{% endblock %}{% block content %}
+
+<div class="page-header">
+    <h1>Login</h1>
+</div>
+<p>Sign in with your Google or Facebook credentials in order to add your own content.</p>
+
+<!-- GOOGLE PLUS SIGN IN BUTTON-->
+<div id="signInButton">
+    <span class="g-signin" data-scope="openid email" data-clientid="357536957798-0ihfi21gkbkhosss9929kattm9ajt8sb.apps.googleusercontent.com"
+    data-redirecturi="postmessage" data-accesstype="offline" data-cookiepolicy="single_host_origin" data-callback="signInCallback"
+    data-approvalprompt="force">
+    </span>
+</div>
+
+<!-- FACEBOOK SIGN IN BUTTON-->
+
+    <fb:login-button scope="public_profile,email" data-size="large" onlogin="sendTokenToServer();">
+    </fb:login-button>
+
+
+<div id="result"></div>
+
+
+<!-- GOOGLE PLUS SIGN IN -->
+<script>
+    function signInCallback(authResult) {
+        if (authResult['code']) {
+            // Hide the sign-in button now that the user is authorized
+            $('#signinButton').attr('style', 'display: none');
+            // Send the one-time-use code to the server, if the server responds, write a 'login successful' message to the web page and then redirect back to the home page
+            $.ajax({
+            type: 'POST',
+            url: '/gconnect?state={{STATE}}',
+            processData: false,
+            data: authResult['code'],
+            contentType: 'application/octet-stream; charset=utf-8',
+            success: function(result) {
+                // Handle or verify the server response if necessary.
+                if (result) {
+                    $('#result').html('Login Successful!</br>'+ result + '</br>Redirecting...');
+                    setTimeout(function() {window.location.href = "/";}, 1000);
+                }
+            }
+            });
+        }
+        else if (authResult['error']) {
+            console.log('There was an error: ' + authResult['error']);
+        }
+        else {
+            $('#result').html('Failed to make a server-side call. Check your configuration and console.');
+        }
+    }
+</script>
+
+<!--LOAD PRE-REQUISITES FOR GOOGLE SIGN IN -->
+<script src="//apis.google.com/js/platform.js?onload=start"></script>
+
+<!--END GOOGLE PLUS SIGN IN  -->
+
+<!--FACEBOOK SIGN IN -->
+<script>
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : '955693601190903',
+            cookie     : true,  // enable cookies to allow the server to access the session
+            xfbml      : true,
+            version    : 'v2.5'
+        });
+    };
+
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+    // Here we run a very simple test of the Graph API after login is
+    // successful.  See statusChangeCallback() for when this call is made.
+    function sendTokenToServer() {
+        var access_token = FB.getAuthResponse()['accessToken'];
+        console.log(access_token)
+        console.log('Welcome!  Fetching your information.... ');
+        FB.api('/me', function(response) {
+            console.log('Successful login for: ' + response.name);
+            
+            $.ajax({
+                type: 'POST',
+                url: '/fbconnect?state={{STATE}}',
+                processData: false,
+                data: access_token,
+                contentType: 'application/octet-stream; charset=utf-8',
+                
+                success: function(result) {
+                    // Handle or verify the server response if necessary.
+                    if (result) {
+                        $('#result').html('Login Successful!</br>'+ result + '</br>Redirecting...');
+                        setTimeout(function() {window.location.href = "/";}, 1000);
+                    } 
+                    else {
+                        $('#result').html('Failed to make a server-side call. Check your configuration and console.');
+                    }
+                }
+                
+            });
+
+        });
+    }
+
+</script>
+
+<!--END FACEBOOK SIGN IN -->
+
+
+{% endblock %}

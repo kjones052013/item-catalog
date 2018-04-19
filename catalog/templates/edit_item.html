@@ -1,0 +1,51 @@
+<!-- Edit an item -->
+
+{% extends "base.html" %}
+{% block title %}Edit Item {{item.name}} - Catalog App{% endblock %}
+{% block content %}
+
+<div class="page-header">
+    <span class="h1">Edit {{item.name}}</span>
+</div>
+
+{% include "form_errors.html" %}
+
+<div class="row">
+    <div class="col-md-6 padding-top">
+        <form method="post" enctype="multipart/form-data">
+            {{ form.csrf_token }}
+            <div class="form-group">
+                {{form.name.label}} {{form.name(class="form-control")}}
+            </div>
+            <div class="form-group">
+                {{form.description.label}} {{form.description(class="form-control")}}
+            </div>
+            <div class="form-group">
+                 {{form.category_id.label}} {{form.category_id(class="form-control")}}
+            </div>
+            <div class="form-group">
+                {{form.image.label}}
+                {% if item.image %}
+                <div class="media media-item-edit">
+                    <div class="media-left">
+                        <a href="#">
+                            <img src="{{ url_for('uploads', filename=item.image) }}" class="media-object img-rounded item-img-sm"/>
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        {{item.image}}
+                    </div>
+                </div>
+                {% endif %}
+                {{form.image(class="form-control")}}
+            </div>
+            <button type="submit" class="btn btn-default" id="submit" type="submit">
+                <span class="glyphicon glyphicon-plus"></span>Save</button>
+            <a href="{{url_for('catalog')}}" class="btn btn-default">
+                <span class="glyphicon glyphicon-remove"></span>Cancel
+            </a>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

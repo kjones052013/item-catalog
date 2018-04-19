@@ -1,0 +1,28 @@
+<!-- Edit a category -->
+
+{% extends "base.html" %}
+{% block title %}Edit Category {{category.name}} - Catalog App{% endblock %}
+{% block content %}
+
+<div class="page-header">
+    <span class="h1">Edit Category {{category.name}}</span>
+</div>
+
+{% include "form_errors.html" %}
+
+<div class="row">
+    <div class="col-md-6 padding-top">
+        <form method="post">
+            {{ form.csrf_token }}
+            <div class="form-group">
+                {{form.name.label}} {{form.name(class="form-control")}}
+            </div>
+            <button type="submit" class="btn btn-default" id="submit" type="submit">
+                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>Save</button>
+            <a href="{{url_for('category', name = category.name)}}" class="btn btn-default delete">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancel
+            </a>
+        </form>
+    </div>
+</div>
+{% endblock %}

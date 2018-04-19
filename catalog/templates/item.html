@@ -1,0 +1,47 @@
+<!-- Display an item -->
+
+{% extends "base.html" %}
+{% block title %}Item {{item.name}} - Catalog App{% endblock %}
+{% block content %}
+
+<div class="row">
+    {% include "flash.html" %}
+</div>
+
+<div class="page-header">
+    <span class="h1">
+        {{ item.name }}
+    </span>
+    {% if owner %}
+    <img src="{{ owner.picture }}" class="img-circle pull-right" height="40" alt="{{owner.name}}" title="{{owner.name}}">
+    {% endif %}
+    {% if 'user_id' in session and session['user_id'] == item.user_id %}
+    <span class="pull-right padding-top">
+        <a href="{{url_for('editItem', name=item.name)}}" title="Edit this item">
+            <span class="glyphicon glyphicon-pencil"></span>Edit 
+        </a>
+        <a href="{{url_for('deleteItem' , name=item.name)}}" title="Delete this item">
+            <span class="glyphicon glyphicon-trash"></span>Delete 
+        </a>
+        &nbsp;
+    </span>
+    {% endif %}
+</div>
+<div class="row">
+    <div class="col-md-10">
+        <div class="media">
+            <div class="media-left">
+                <a href="#">
+                {% if item.image %}
+                    <img src="{{ url_for('uploads', filename=item.image) }}" class="media-object img-rounded item-img"/>
+                {% endif %}
+                </a>
+            </div>
+            <div class="media-body">
+                {{item.description}}
+            </div>
+        </div>
+    </div>
+</div>
+ 
+{% endblock %}

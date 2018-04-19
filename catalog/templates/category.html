@@ -1,0 +1,56 @@
+<!-- Display a category -->
+
+{% extends "base.html" %}
+{% block title %}Category {{category.name}} - Catalog App{% endblock %}
+{% block content %}
+
+<div class="row">
+    {% include "flash.html" %}
+</div>
+
+<div class="row">
+    
+    <div class="col-sm-4">
+        {% include "categories.html" %}
+    </div>
+
+    <div class="col-sm-8">
+        <div class="page-header">
+            <span class="h1">
+                {{ category.name }}
+                {% if items %}
+                <span id="item-count" class="small">({{items|count}})</span>
+                {% endif %}
+            </span>
+            {% if 'user_id' in session %}
+            <span class="pull-right padding-top">
+                <a href="{{url_for('newItem')}}">
+                    <span class="glyphicon glyphicon-plus"></span>Add Item
+                </a>
+            </span>
+            {% endif %}
+            {% if 'user_id' in session and session['user_id'] == category.user_id %}
+            <span class="pull-right padding-top">
+                <a href="{{url_for('editCategory', name = category.name )}}" title="Edit this category">
+                    <span class="glyphicon glyphicon-pencil"></span>Edit 
+                </a>
+                <a href="{{url_for('deleteCategory', name = category.name )}}" title="Delete this category">
+                    <span class="glyphicon glyphicon-trash"></span>Delete 
+                </a>
+            </span>
+            {% endif %}
+        </div>
+        
+        {% if items %}
+        {% for item in items %} 
+        <div>
+            <strong><a href="{{url_for('item', name = item.name)}}" class="font-larger">{{item.name}}</a></strong>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+    </div>
+    
+</div>
+
+{% endblock %}
