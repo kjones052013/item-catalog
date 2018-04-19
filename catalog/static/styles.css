@@ -1,0 +1,38 @@
+ body {
+  padding-top: 50px;
+}
+.padding-top {
+	padding-top: 20px;
+}
+.padding-bottom {
+	padding-bottom: 30px;
+}
+.margin-top {
+    margin-top: 44px;
+}
+.font-larger {
+    font-size:16px;
+}
+.glyphicon {
+    margin-left:6px;
+    margin-right:2px;
+}
+.fa {
+    margin-left:6px;
+    margin-right:4px;
+}
+.item-img {
+    max-width:250px;
+}
+.img-md {
+     max-width:100px;
+}
+.item-img-sm {
+     max-width:40px;
+}
+div.media {
+    margin-bottom: 4px;
+}
+.media-item-edit {
+    margin-top:0;
+}
